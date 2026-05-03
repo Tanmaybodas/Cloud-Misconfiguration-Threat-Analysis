@@ -1,4 +1,4 @@
-﻿# Cloud Misconfiguration Threat Analysis PBL
+﻿# Cloud Misconfiguration Threat Analysis 
 
 This repository implements a safe, LocalStack-first cloud misconfiguration lab for threat modeling, scanner triage, CIS/OWASP mapping, and remediation evidence.
 
