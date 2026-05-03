@@ -1,0 +1,48 @@
+flowchart LR
+  InternetUsers[Internet Users]
+  Developers[Developers]
+  CICD[CI/CD Pipeline]
+
+  subgraph InternetZone[Internet Zone]
+    InternetUsers
+  end
+
+  subgraph DMZ[DMZ / Public Cloud Edge]
+    APIGW[API Gateway]
+    EC2[EC2 Web App]
+  end
+
+  subgraph InternalVPC[Internal VPC]
+    Lambda[Lambda Functions]
+    S3[(S3 Bucket)]
+    RDS[(RDS Database)]
+    Secrets[(Secrets Manager Intended)]
+  end
+
+  subgraph AdminZone[Admin Zone]
+    Developers
+    CICD
+    IAM[IAM Control Plane]
+  end
+
+  InternetUsers -- "HTTPS requests; TB-1" --> APIGW
+  APIGW -- "HTTPS integration; TB-2" --> EC2
+  APIGW -- "Invoke; TB-2" --> Lambda
+  EC2 -- "DB connections; TB-4" --> RDS
+  EC2 -- "S3 reads/writes; TB-4" --> S3
+  Lambda -- "S3 reads/writes; TB-4" --> S3
+  Lambda -- "Secret retrieval; TB-4" --> Secrets
+  Developers -- "IAM API calls; TB-3" --> IAM
+  CICD -- "Deploy/IAM API calls; TB-3" --> IAM
+  IAM -- "Assume role / policy grants" --> EC2
+  IAM -- "Function role grants" --> Lambda
+
+  classDef internet fill:#fee2e2,stroke:#b91c1c,color:#111827
+  classDef dmz fill:#fef3c7,stroke:#b45309,color:#111827
+  classDef internal fill:#dcfce7,stroke:#15803d,color:#111827
+  classDef admin fill:#dbeafe,stroke:#1d4ed8,color:#111827
+
+  class InternetUsers internet
+  class APIGW,EC2 dmz
+  class Lambda,S3,RDS,Secrets internal
+  class Developers,CICD,IAM admin

@@ -1,0 +1,4 @@
+localstack
+awscli-local
+prowler
+scoutsuite

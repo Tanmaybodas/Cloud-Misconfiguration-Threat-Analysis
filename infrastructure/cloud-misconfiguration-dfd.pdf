@@ -1,0 +1,159 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 1600 1000] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>
+endobj
+6 0 obj
+<< /Length 3757 >>
+stream
+BT /F2 24 Tf 420 955 Td (Cloud Misconfiguration Threat Analysis - Data Flow Diagram) Tj ET
+0.996 0.886 0.886 rg
+0.725 0.11 0.11 RG
+[8 8] 0 d
+40 160 280 760 re B
+0.996 0.953 0.78 rg
+0.706 0.325 0.035 RG
+[8 8] 0 d
+370 160 330 760 re B
+0.863 0.988 0.906 rg
+0.082 0.502 0.239 RG
+[8 8] 0 d
+750 160 470 760 re B
+0.859 0.918 0.996 rg
+0.114 0.306 0.847 RG
+[8 8] 0 d
+1260 160 290 760 re B
+BT /F2 13 Tf 95 885 Td (Internet Zone) Tj ET
+BT /F2 13 Tf 95 868 Td (Trust: untrusted) Tj ET
+BT /F2 13 Tf 430 885 Td (DMZ / Public Edge) Tj ET
+BT /F2 13 Tf 430 868 Td (Trust: controlled public) Tj ET
+BT /F2 13 Tf 830 885 Td (Internal VPC) Tj ET
+BT /F2 13 Tf 830 868 Td (Trust: private application/data) Tj ET
+BT /F2 13 Tf 1310 885 Td (Admin Zone) Tj ET
+BT /F2 13 Tf 1310 868 Td (Trust: privileged identities) Tj ET
+1 1 1 rg
+0.725 0.11 0.11 RG
+[] 0 d
+85 700 190 70 re B
+BT /F2 12 Tf 99 745 Td (External Entity) Tj ET
+BT /F2 12 Tf 99 729 Td (Internet Users) Tj ET
+1 1 1 rg
+0.114 0.306 0.847 RG
+[] 0 d
+1310 740 180 70 re B
+BT /F2 12 Tf 1324 785 Td (External Entity) Tj ET
+BT /F2 12 Tf 1324 769 Td (Developers) Tj ET
+1 1 1 rg
+0.114 0.306 0.847 RG
+[] 0 d
+1310 620 180 70 re B
+BT /F2 12 Tf 1324 665 Td (External Entity) Tj ET
+BT /F2 12 Tf 1324 649 Td (CI/CD Pipeline) Tj ET
+1 1 1 rg
+0.706 0.325 0.035 RG
+[] 0 d
+435 700 190 90 re B
+BT /F2 12 Tf 449 765 Td (Process) Tj ET
+BT /F2 12 Tf 449 749 Td (API Gateway) Tj ET
+1 1 1 rg
+0.706 0.325 0.035 RG
+[] 0 d
+435 500 190 90 re B
+BT /F2 12 Tf 449 565 Td (Process) Tj ET
+BT /F2 12 Tf 449 549 Td (EC2 Web App) Tj ET
+1 1 1 rg
+0.082 0.502 0.239 RG
+[] 0 d
+815 700 190 90 re B
+BT /F2 12 Tf 829 765 Td (Process) Tj ET
+BT /F2 12 Tf 829 749 Td (Lambda Functions) Tj ET
+1 1 1 rg
+0.082 0.502 0.239 RG
+[] 0 d
+800 370 190 100 re B
+BT /F2 12 Tf 814 445 Td (Data Store) Tj ET
+BT /F2 12 Tf 814 429 Td (S3 Bucket) Tj ET
+BT /F2 12 Tf 814 413 Td (misconfig: public ACL) Tj ET
+1 1 1 rg
+0.082 0.502 0.239 RG
+[] 0 d
+1020 370 190 100 re B
+BT /F2 12 Tf 1034 445 Td (Data Store) Tj ET
+BT /F2 12 Tf 1034 429 Td (RDS Database) Tj ET
+BT /F2 12 Tf 1034 413 Td (misconfig: public, unencrypted) Tj ET
+1 1 1 rg
+0.082 0.502 0.239 RG
+[] 0 d
+910 200 190 100 re B
+BT /F2 12 Tf 924 275 Td (Data Store) Tj ET
+BT /F2 12 Tf 924 259 Td (Secrets Manager) Tj ET
+BT /F2 12 Tf 924 243 Td (intended control) Tj ET
+1 1 1 rg
+0.114 0.306 0.847 RG
+[] 0 d
+1300 400 210 100 re B
+BT /F2 12 Tf 1314 475 Td (Cloud Control Plane) Tj ET
+BT /F2 12 Tf 1314 459 Td (IAM Roles and Policies) Tj ET
+BT /F2 12 Tf 1314 443 Td (misconfig: wildcard admin) Tj ET
+BT /F2 12 Tf 285 810 Td (TB-1 Internet / DMZ) Tj ET
+BT /F2 12 Tf 655 810 Td (TB-2 DMZ / Internal) Tj ET
+BT /F2 12 Tf 1160 810 Td (TB-3 Admin / Control) Tj ET
+BT /F2 12 Tf 850 530 Td (TB-4 Service / Data) Tj ET
+0.216 0.255 0.318 RG
+[] 0 d 2 w 275 735 m 435 745 l S
+BT /F1 10 Tf 300 748 Td (HTTPS requests / TB-1) Tj ET
+0.216 0.255 0.318 RG
+[] 0 d 2 w 530 700 m 530 590 l S
+BT /F1 10 Tf 475 653 Td (HTTPS integration) Tj ET
+0.216 0.255 0.318 RG
+[] 0 d 2 w 625 750 m 815 750 l S
+BT /F1 10 Tf 665 758 Td (Invoke / TB-2) Tj ET
+0.216 0.255 0.318 RG
+[] 0 d 2 w 625 545 m 1020 420 l S
+0.216 0.255 0.318 RG
+[] 0 d 2 w 625 545 m 800 420 l S
+0.216 0.255 0.318 RG
+[] 0 d 2 w 910 700 m 895 470 l S
+0.216 0.255 0.318 RG
+[] 0 d 2 w 930 700 m 1005 300 l S
+0.216 0.255 0.318 RG
+[] 0 d 2 w 1400 740 m 1405 500 l S
+BT /F1 10 Tf 1347.5 628 Td (IAM / TB-3) Tj ET
+0.216 0.255 0.318 RG
+[] 0 d 2 w 1400 620 m 1405 500 l S
+BT /F1 10 Tf 1347.5 568 Td (Deploy / IAM) Tj ET
+0.216 0.255 0.318 RG
+[] 0 d 2 w 1300 450 m 625 545 l S
+0.216 0.255 0.318 RG
+[] 0 d 2 w 1300 450 m 1005 745 l S
+0.976 0.98 0.984 rg
+0.42 0.447 0.502 RG
+[] 0 d
+160 60 1280 50 re B
+BT /F1 13 Tf 185 80 Td (Legend: dashed boxes are trust boundaries. TB-1 through TB-4 mark attack-surface crossings.) Tj ET
+endstream
+endobj
+xref
+0 7
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000253 00000 n 
+0000000323 00000 n 
+0000000398 00000 n 
+trailer << /Size 7 /Root 1 0 R >>
+startxref
+4207
+%%EOF

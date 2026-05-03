@@ -1,0 +1,8 @@
+evidence/**/*.json
+evidence/**/*.html
+evidence/**/*.txt
+evidence/**/*.log
+prowler-results/
+scoutsuite-results/
+.localstack/
+*.zip
