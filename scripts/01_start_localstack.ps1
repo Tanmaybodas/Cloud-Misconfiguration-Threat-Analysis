@@ -24,13 +24,14 @@ if ($existing -contains $name) {
 $mode = @()
 if ($Detached) {
   $mode += "-d"
-} else {
+}
+else {
   $mode += "-it"
 }
 
 docker run --rm @mode `
   --name $name `
   -p 4566:4566 `
-  -e SERVICES=s3,ec2,iam,rds,lambda,apigateway,secretsmanager,sts `
+  -e "SERVICES=s3,ec2,iam,rds,lambda,apigateway,secretsmanager,sts" `
   -e DEBUG=0 `
-  localstack/localstack
+  localstack/localstack:3.4.0
