@@ -120,26 +120,99 @@ CloudMisconfiguration_PBL/
 
 ### Quick Start (5 Minutes)
 
-Run the complete lab in sequence:
+Run the complete lab with a single command:
 
 ```powershell
-# 1. Start LocalStack
-powershell -ExecutionPolicy Bypass -File .\scripts\01_start_localstack.ps1 -Detached
+python run_project.py
+```
 
-# 2. Create secure baseline
-powershell -ExecutionPolicy Bypass -File .\scripts\02_create_before_state.ps1
+> **Tip:** See [MANUAL_RUN.md](MANUAL_RUN.md) for instructions on running individual steps manually.
 
-# 3. Introduce misconfigurations
-powershell -ExecutionPolicy Bypass -File .\scripts\03_introduce_misconfigs.ps1
+---
 
-# 4. Run security scanners
-powershell -ExecutionPolicy Bypass -File .\scripts\04_run_scanners.ps1
+## 📺 Example Output
 
-# 5. Apply hardening
-powershell -ExecutionPolicy Bypass -File .\scripts\05_harden.ps1
+When you run `python run_project.py`, you'll see this progress:
 
-# 6. Export diagrams
-powershell -ExecutionPolicy Bypass -File .\scripts\06_export_diagram_assets.ps1
+```
+╔════════════════════════════════════════════════════════════════╗
+║  Cloud Misconfiguration PBL - Project Runner                   ║
+╚════════════════════════════════════════════════════════════════╝
+
+Checking Docker...
+✓ Docker is running!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  STEP 0 - Check Prerequisites
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Checking required tools...
+OK       docker -> C:\Program Files\Docker\Docker\resources\bin\docker.exe
+OK       python -> C:\Users\...\CloudMisconfiguration_PBL\.venv\Scripts\python.exe
+OK       pip -> C:\Users\...\CloudMisconfiguration_PBL\.venv\Scripts\pip.exe
+OK       awslocal -> C:\Users\...\CloudMisconfiguration_PBL\.venv\Scripts\awslocal.bat
+Prerequisite check complete.
+✓ Step 0 completed successfully!
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  STEP 1 - Start LocalStack
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+LocalStack container 'pbl-localstack' is running on http://localhost:4566
+✓ Step 1 completed successfully!
+
+Waiting 5 seconds for LocalStack to be ready...
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  STEP 2 - Create Secure Baseline
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Creating before-state VPC...
+Creating restrictive security group...
+Creating private S3 bucket with public access block...
+Creating least-privilege EC2 role...
+Creating EC2-like instance...
+Creating RDS-equivalent database in private subnet...
+Before-state complete. Inventory written to evidence/before/inventory.json
+✓ Step 2 completed successfully!
+
+[... Steps 3-6 continue ...]
+
+╔════════════════════════════════════════════════════════════════╗
+║  ✓ Project execution complete!                                 ║
+║  Check evidence/ and docs/ folders for results                 ║
+╚════════════════════════════════════════════════════════════════╝
+```
+
+### What Gets Generated
+
+After running, check these folders:
+
+```
+✅ evidence/before/           → Secure baseline state (inventory.json, VPCs, security groups, S3, IAM)
+✅ evidence/misconfigured/    → Vulnerable state with all misconfigurations
+✅ evidence/hardened/         → Remediated state after fixes
+✅ infrastructure/            → DFD diagrams (PNG + PDF)
+✅ docs/                      → Analysis reports and threat mappings
+```
+
+### Example Evidence File
+
+**evidence/before/inventory.json:**
+
+```json
+{
+  "region": "us-east-1",
+  "endpoint": "http://localhost:4566",
+  "vpc_id": "vpc-12345678",
+  "public_subnet_id": "subnet-11111111",
+  "private_subnet_ids": ["subnet-22222222", "subnet-33333333"],
+  "internet_gateway_id": "igw-12345678",
+  "security_group_id": "sg-12345678",
+  "bucket": "pbl-secure-before-bucket",
+  "iam_role": "arn:aws:iam::000000000000:role/pbl-before-ec2-role",
+  "instance_id": "i-1234567890abcdef0"
+}
 ```
 
 ---

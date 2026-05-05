@@ -27,7 +27,7 @@ $env:AWS_SECRET_ACCESS_KEY = "test"
 Write-Host "Creating before-state VPC..."
 $vpc = awslocal ec2 create-vpc --cidr-block $VpcCidr | ConvertFrom-Json
 $vpcId = $vpc.Vpc.VpcId
-awslocal ec2 create-tags --resources $vpcId --tags Key=Name,Value=pbl-before-vpc | Out-Null
+awslocal ec2 create-tags --resources $vpcId --tags Key=Name, Value=pbl-before-vpc | Out-Null
 
 $publicSubnet = awslocal ec2 create-subnet --vpc-id $vpcId --cidr-block "10.20.1.0/24" --availability-zone "${Region}a" | ConvertFrom-Json
 $privateSubnetA = awslocal ec2 create-subnet --vpc-id $vpcId --cidr-block "10.20.2.0/24" --availability-zone "${Region}b" | ConvertFrom-Json
@@ -69,22 +69,22 @@ $instanceId = $instance.Instances[0].InstanceId
 
 Write-Host "Creating RDS-equivalent database in private subnet..."
 $dbSubnetGroupName = "pbl-before-db-subnets"
-awslocal rds create-db-subnet-group --db-subnet-group-name $dbSubnetGroupName --db-subnet-group-description "Before-state private DB subnets" --subnet-ids $privateSubnetAId $privateSubnetBId | Out-Null
-awslocal rds create-db-instance --db-instance-identifier pbl-before-db --db-instance-class db.t3.micro --engine postgres --master-username admin --master-user-password "Use-A-Strong-Local-Password-123!" --allocated-storage 20 --storage-encrypted --no-publicly-accessible --db-subnet-group-name $dbSubnetGroupName | Out-Null
+awslocal rds create-db-subnet-group --db-subnet-group-name $dbSubnetGroupName --db-subnet-group-description "Before-state private DB subnets" --subnet-ids $privateSubnetAId $privateSubnetBId 2>$null | Out-Null
+awslocal rds create-db-instance --db-instance-identifier pbl-before-db --db-instance-class db.t3.micro --engine postgres --master-username admin --master-user-password "Use-A-Strong-Local-Password-123!" --allocated-storage 20 --storage-encrypted --no-publicly-accessible --db-subnet-group-name $dbSubnetGroupName 2>$null | Out-Null
 
 $inventory = [ordered]@{
-  region = $Region
-  endpoint = "http://localhost:4566"
-  vpc_id = $vpcId
-  public_subnet_id = $publicSubnetId
-  private_subnet_ids = @($privateSubnetAId, $privateSubnetBId)
+  region              = $Region
+  endpoint            = "http://localhost:4566"
+  vpc_id              = $vpcId
+  public_subnet_id    = $publicSubnetId
+  private_subnet_ids  = @($privateSubnetAId, $privateSubnetBId)
   internet_gateway_id = $igwId
-  route_table_id = $routeTableId
-  security_group_id = $sgId
-  bucket = $BucketName
-  iam_role = "arn:aws:iam::000000000000:role/pbl-before-ec2-role"
-  instance_id = $instanceId
-  rds_instance = "pbl-before-db"
+  route_table_id      = $routeTableId
+  security_group_id   = $sgId
+  bucket              = $BucketName
+  iam_role            = "arn:aws:iam::000000000000:role/pbl-before-ec2-role"
+  instance_id         = $instanceId
+  rds_instance        = "pbl-before-db"
 }
 
 Save-Json "inventory.json" $inventory
@@ -92,6 +92,6 @@ awslocal ec2 describe-vpcs > evidence/before/vpcs.json
 awslocal ec2 describe-security-groups > evidence/before/security-groups.json
 awslocal s3api get-public-access-block --bucket $BucketName > evidence/before/s3-public-access-block.json
 awslocal iam get-role --role-name pbl-before-ec2-role > evidence/before/iam-role.json
-awslocal rds describe-db-instances > evidence/before/rds.json
+awslocal rds describe-db-instances 2>$null > evidence/before/rds.json
 
 Write-Host "Before-state complete. Inventory written to evidence/before/inventory.json"

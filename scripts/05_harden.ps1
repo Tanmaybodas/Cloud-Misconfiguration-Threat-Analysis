@@ -65,12 +65,12 @@ try {
 Write-Host "Creating hardened replacement database because RDS encryption cannot be toggled in place..."
 $safeSubnetGroup = "pbl-hardened-db-subnets"
 try {
-  awslocal rds create-db-subnet-group --db-subnet-group-name $safeSubnetGroup --db-subnet-group-description "Hardened private DB subnet group" --subnet-ids $privateSubnetIds | Out-Null
+  awslocal rds create-db-subnet-group --db-subnet-group-name $safeSubnetGroup --db-subnet-group-description "Hardened private DB subnet group" --subnet-ids $privateSubnetIds 2>$null | Out-Null
 } catch {
   Write-Host "Hardened DB subnet group may already exist; continuing."
 }
 try {
-  awslocal rds create-db-instance --db-instance-identifier pbl-hardened-db --db-instance-class db.t3.micro --engine postgres --master-username admin --master-user-password "Use-A-Strong-Local-Password-123!" --allocated-storage 20 --storage-encrypted --no-publicly-accessible --db-subnet-group-name $safeSubnetGroup | Out-Null
+  awslocal rds create-db-instance --db-instance-identifier pbl-hardened-db --db-instance-class db.t3.micro --engine postgres --master-username admin --master-user-password "Use-A-Strong-Local-Password-123!" --allocated-storage 20 --storage-encrypted --no-publicly-accessible --db-subnet-group-name $safeSubnetGroup 2>$null | Out-Null
 } catch {
   Write-Host "Hardened DB may already exist; continuing."
 }
@@ -79,6 +79,6 @@ awslocal s3api get-public-access-block --bucket $BucketName > evidence/hardened/
 awslocal s3api get-bucket-acl --bucket $BucketName > evidence/hardened/s3-acl.json
 awslocal ec2 describe-security-groups --group-ids $sgId > evidence/hardened/security-group-remediated.json
 awslocal iam list-attached-role-policies --role-name pbl-misconfigured-admin-role > evidence/hardened/admin-role-attached-policies.json
-awslocal rds describe-db-instances > evidence/hardened/rds.json
+awslocal rds describe-db-instances 2>$null > evidence/hardened/rds.json
 
 Write-Host "Hardening complete. Evidence written to evidence/hardened/."

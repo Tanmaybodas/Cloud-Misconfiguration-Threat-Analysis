@@ -21,14 +21,14 @@ if ($null -ne (Get-Command prowler -ErrorAction SilentlyContinue)) {
   Write-Host "Running broader Prowler AWS checks against LocalStack..."
   prowler aws --endpoint-url http://localhost:4566 --output-formats json html --output-directory ./prowler-results | Tee-Object evidence/scanners/prowler-full.log
 } else {
-  Write-Host "Prowler not found. Install with: pip install prowler"
+  Write-Host "[OPTIONAL] Prowler scanner not installed (optional analysis tool). Install with: pip install prowler"
 }
 
 if ($null -ne (Get-Command scout -ErrorAction SilentlyContinue)) {
   Write-Host "Running ScoutSuite. LocalStack coverage may be limited; use output as supplemental evidence."
   scout aws --report-dir ./scoutsuite-results --no-browser --force | Tee-Object evidence/scanners/scoutsuite.log
 } else {
-  Write-Host "ScoutSuite not found. Install with: pip install scoutsuite"
+  Write-Host "[OPTIONAL] ScoutSuite scanner not installed (optional analysis tool). Install with: pip install scoutsuite"
 }
 
 Write-Host "Scanner phase complete. Triage notes belong in docs/scanner-findings-analysis.md."
