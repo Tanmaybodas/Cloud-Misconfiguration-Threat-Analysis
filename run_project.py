@@ -77,9 +77,42 @@ def run_step(step_num, script_name, description, args=None):
         cmd = ["powershell", "-ExecutionPolicy", "Bypass", "-File", str(script_path)]
         if args:
             cmd.extend(args)
-        
-        result = subprocess.run(cmd, cwd=Path(__file__).parent)
-        
+
+        # Capture output so we can detect and explain common awslocal errors
+        result = subprocess.run(cmd, cwd=Path(__file__).parent, capture_output=True, text=True)
+
+        # Print stdout if present
+        if result.stdout:
+            print(result.stdout)
+
+        # If there is stderr, try to recognise common awslocal/localstack messages and
+        # print a friendly explanatory note instead of the raw noisy error text.
+        if result.stderr:
+            stderr = result.stderr.strip()
+            lower = stderr.lower()
+            handled = False
+
+            # RDS unsupported by LocalStack / pro-only
+            if ("api for service 'rds' not yet implemented" in lower
+                or "api for service \"rds\" not yet implemented" in lower
+                or ("internalfailure" in lower and "rds" in lower)):
+                print(f"{Colors.YELLOW}[INFO] RDS APIs are not implemented by this LocalStack instance or require a pro license. These errors are expected and can be ignored for this lab.{Colors.END}\n")
+                handled = True
+
+            # Resource already exists from previous runs
+            if not handled and ("entityalreadyexists" in lower or "role with name" in lower or "already exists" in lower):
+                print(f"{Colors.YELLOW}[INFO] Resource already exists from a previous run (EntityAlreadyExists). This is harmless; run `scripts/00_cleanup.ps1` to reset state if you want a clean run.{Colors.END}\n")
+                handled = True
+
+            # Quota/limits reached
+            if not handled and "limitexceeded" in lower:
+                print(f"{Colors.YELLOW}[INFO] A service quota was reached (LimitExceeded) likely due to leftover resources. Consider running the cleanup script before retrying.{Colors.END}\n")
+                handled = True
+
+            # If we didn't recognise the stderr, show it (helps with unexpected failures)
+            if not handled:
+                print(f"{Colors.RED}{stderr}{Colors.END}\n")
+
         if result.returncode == 0:
             print_success(f"Step {step_num} completed successfully!")
             return True
