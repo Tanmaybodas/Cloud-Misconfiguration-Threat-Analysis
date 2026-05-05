@@ -68,11 +68,11 @@ Append-MisconfigLog "IAM wildcard and AdministratorAccess policies allow account
 Write-Host "Creating intentionally weak, public, unencrypted RDS-equivalent..."
 $unsafeSubnetGroup = "pbl-misconfigured-db-subnets"
 try {
-  awslocal rds create-db-subnet-group --db-subnet-group-name $unsafeSubnetGroup --db-subnet-group-description "Misconfigured DB subnet group" --subnet-ids $privateSubnetIds 2>$null | Out-Null
+  awslocal rds create-db-subnet-group --db-subnet-group-name $unsafeSubnetGroup --db-subnet-group-description "Misconfigured DB subnet group" --subnet-ids $privateSubnetIds | Out-Null
 } catch {
   Write-Host "DB subnet group may already exist; continuing."
 }
-awslocal rds create-db-instance --db-instance-identifier pbl-misconfigured-db --db-instance-class db.t3.micro --engine postgres --master-username admin --master-user-password Password123 --allocated-storage 20 --no-storage-encrypted --publicly-accessible --db-subnet-group-name $unsafeSubnetGroup 2>$null | Out-Null
+awslocal rds create-db-instance --db-instance-identifier pbl-misconfigured-db --db-instance-class db.t3.micro --engine postgres --master-username admin --master-user-password Password123 --allocated-storage 20 --no-storage-encrypted --publicly-accessible --db-subnet-group-name $unsafeSubnetGroup | Out-Null
 Append-MisconfigLog "RDS-equivalent database is public, unencrypted, and uses weak credentials" "awslocal rds create-db-instance --db-instance-identifier pbl-misconfigured-db --no-storage-encrypted --publicly-accessible --master-user-password Password123" "arn:aws:rds:$Region:000000000000:db:pbl-misconfigured-db" "CIS 2.3.1 - Ensure RDS instances are encrypted; CIS 2.3.3 - Ensure RDS instances are not public" "Public access, no encryption, and weak credentials create a high-impact data breach path."
 
 awslocal s3api get-bucket-acl --bucket $BucketName > evidence/misconfigured/s3-acl.json
@@ -80,6 +80,6 @@ awslocal s3api list-objects-v2 --bucket $BucketName > evidence/misconfigured/s3-
 awslocal ec2 describe-security-groups --group-ids $sgId > evidence/misconfigured/security-group-open-ports.json
 awslocal iam list-attached-role-policies --role-name pbl-misconfigured-admin-role > evidence/misconfigured/admin-role-policies.json
 awslocal iam get-user-policy --user-name pbl-wildcard-user --policy-name pbl-wildcard-admin > evidence/misconfigured/wildcard-user-policy.json
-awslocal rds describe-db-instances 2>$null > evidence/misconfigured/rds.json
+awslocal rds describe-db-instances > evidence/misconfigured/rds.json
 
 Write-Host "Misconfigured state complete. Evidence written to evidence/misconfigured/."
