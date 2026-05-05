@@ -223,6 +223,8 @@ After running, check these folders:
 
 Cloud architecture with trust boundaries (Internet → DMZ → Internal VPC → Admin Zone)
 
+![Cloud Misconfiguration Threat Analysis - Data Flow Diagram](infrastructure/cloud-misconfiguration-dfd.png)
+
 ### 2. **STRIDE Threat Table** (`docs/stride-threat-table.md`)
 
 | Service         | Example Threats                                   | Rating       |
