@@ -128,6 +128,16 @@ python run_project.py
 
 > **Tip:** See [MANUAL_RUN.md](MANUAL_RUN.md) for instructions on running individual steps manually.
 
+> **Note:** The `run_project.py` launcher prints concise informational messages for common LocalStack/awslocal conditions (for example: RDS APIs not implemented in LocalStack, existing resources from previous runs, or service quota limits). These are shown as short `[INFO]` lines and the raw awslocal error text is suppressed to keep output clear.
+
+> **Reset state:** If you want a clean run, use the cleanup script:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\00_cleanup.ps1
+```
+
+See [MANUAL_RUN.md](MANUAL_RUN.md) for more manual-run tips.
+
 ---
 
 ## 📺 Example Output
